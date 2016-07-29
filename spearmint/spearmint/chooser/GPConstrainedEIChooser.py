@@ -111,7 +111,8 @@ class GPConstrainedEIChooser:
                        'constraint_ls'     : self.constraint_ls,
                        'constraint_amp2'   : self.constraint_amp2,
                        'constraint_noise'  : self.constraint_noise,
-                       'constraint_mean'   : self.constraint_mean },
+                       'constraint_mean'   : self.constraint_mean,
+                       'constraint_gain'   : self.constraint_gain},
                      fh)
         fh.close()
 
