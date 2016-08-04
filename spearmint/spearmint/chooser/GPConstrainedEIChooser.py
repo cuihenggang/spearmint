@@ -31,7 +31,7 @@ import scipy.linalg   as spla
 import scipy.stats    as sps
 import scipy.optimize as spo
 import cPickle
-import matplotlib.pyplot as plt
+# import matplotlib.pyplot as plt
 import multiprocessing
 import copy
 
@@ -306,76 +306,76 @@ class GPConstrainedEIChooser:
                     np.mean((comp_preds > 0.5) == labels),
                     np.sum((comp_preds > 0.5) == labels), comp_preds.shape[0])
 
-            if self.visualize2D:
-                delta = 0.025
-                x = np.arange(0, 1.0, delta)
-                y = np.arange(0, 1.0, delta)
-                X, Y = np.meshgrid(x, y)
+            # if self.visualize2D:
+                # delta = 0.025
+                # x = np.arange(0, 1.0, delta)
+                # y = np.arange(0, 1.0, delta)
+                # X, Y = np.meshgrid(x, y)
 
-                cpreds = np.zeros((X.shape[0], X.shape[1]))
-                predei = np.zeros((X.shape[0], X.shape[1]))
-                predei2 = np.zeros((X.shape[0], X.shape[1]))
-                for ii in xrange(self.mcmc_iters):
-                    constraint_hyper = self.constraint_hyper_samples[ii]
-                    self.ff = self.ff_samples[ii]
-                    self.constraint_mean = constraint_hyper[0]
-                    self.constraint_gain = constraint_hyper[1]
-                    self.constraint_amp2 = constraint_hyper[2]
-                    self.constraint_ls = constraint_hyper[3]
+                # cpreds = np.zeros((X.shape[0], X.shape[1]))
+                # predei = np.zeros((X.shape[0], X.shape[1]))
+                # predei2 = np.zeros((X.shape[0], X.shape[1]))
+                # for ii in xrange(self.mcmc_iters):
+                    # constraint_hyper = self.constraint_hyper_samples[ii]
+                    # self.ff = self.ff_samples[ii]
+                    # self.constraint_mean = constraint_hyper[0]
+                    # self.constraint_gain = constraint_hyper[1]
+                    # self.constraint_amp2 = constraint_hyper[2]
+                    # self.constraint_ls = constraint_hyper[3]
 
-                    cpred = self.pred_constraint_voilation(
-                        np.hstack((X.flatten()[:,np.newaxis],
-                                   Y.flatten()[:,np.newaxis])), comp, labels)
-                    pei = self.compute_constrained_ei(
-                        comp, pend, np.hstack(
-                            (X.flatten()[:,np.newaxis],
-                             Y.flatten()[:,np.newaxis])), vals, labels)
-                    pei2 = self.compute_ei(
-                        comp, pend, np.hstack(
-                            (X.flatten()[:,np.newaxis],
-                             Y.flatten()[:,np.newaxis])), vals, labels)
+                    # cpred = self.pred_constraint_voilation(
+                        # np.hstack((X.flatten()[:,np.newaxis],
+                                   # Y.flatten()[:,np.newaxis])), comp, labels)
+                    # pei = self.compute_constrained_ei(
+                        # comp, pend, np.hstack(
+                            # (X.flatten()[:,np.newaxis],
+                             # Y.flatten()[:,np.newaxis])), vals, labels)
+                    # pei2 = self.compute_ei(
+                        # comp, pend, np.hstack(
+                            # (X.flatten()[:,np.newaxis],
+                             # Y.flatten()[:,np.newaxis])), vals, labels)
 
-                    cpreds += np.reshape(cpred, (X.shape[0], X.shape[1]))
-                    predei += np.reshape(pei, (X.shape[0], X.shape[1]))
-                    predei2 += np.reshape(pei2, (X.shape[0], X.shape[1]))
+                    # cpreds += np.reshape(cpred, (X.shape[0], X.shape[1]))
+                    # predei += np.reshape(pei, (X.shape[0], X.shape[1]))
+                    # predei2 += np.reshape(pei2, (X.shape[0], X.shape[1]))
 
-                plt.figure(1)
-                plt.clf()
-                cpreds = cpreds/float(self.mcmc_iters)
-                CS = plt.contour(X,Y,cpreds)
-                plt.clabel(CS, inline=1, fontsize=10)
-                plt.plot(comp[labels == 0,0], comp[labels == 0,1], 'rx')
-                plt.plot(comp[labels == 1,0], comp[labels == 1,1], 'bx')
-                plt.title(
-                    'Contours of Classification GP (Prob of not being a '
-                    'constraint violation)')
-                plt.legend(('Constraint Violations', 'Good points'),
-                           'lower left')
-                plt.savefig('constrained_ei_chooser_class_contour.pdf')
+                # plt.figure(1)
+                # plt.clf()
+                # cpreds = cpreds/float(self.mcmc_iters)
+                # CS = plt.contour(X,Y,cpreds)
+                # plt.clabel(CS, inline=1, fontsize=10)
+                # plt.plot(comp[labels == 0,0], comp[labels == 0,1], 'rx')
+                # plt.plot(comp[labels == 1,0], comp[labels == 1,1], 'bx')
+                # plt.title(
+                    # 'Contours of Classification GP (Prob of not being a '
+                    # 'constraint violation)')
+                # plt.legend(('Constraint Violations', 'Good points'),
+                           # 'lower left')
+                # plt.savefig('constrained_ei_chooser_class_contour.pdf')
 
-                plt.figure(2)
-                plt.clf()
-                predei = predei/float(self.mcmc_iters)
-                CS = plt.contour(X,Y,predei)
-                plt.clabel(CS, inline=1, fontsize=10)
-                plt.plot(comp[labels == 0,0], comp[labels == 0,1], 'rx')
-                plt.plot(comp[labels == 1,0], comp[labels == 1,1], 'bx')
-                plt.title('Contours of EI*P(not violating constraint)')
-                plt.legend(('Constraint Violations', 'Good points'),
-                           'lower left')
-                plt.savefig('constrained_ei_chooser_eitimesprob_contour.pdf')
+                # plt.figure(2)
+                # plt.clf()
+                # predei = predei/float(self.mcmc_iters)
+                # CS = plt.contour(X,Y,predei)
+                # plt.clabel(CS, inline=1, fontsize=10)
+                # plt.plot(comp[labels == 0,0], comp[labels == 0,1], 'rx')
+                # plt.plot(comp[labels == 1,0], comp[labels == 1,1], 'bx')
+                # plt.title('Contours of EI*P(not violating constraint)')
+                # plt.legend(('Constraint Violations', 'Good points'),
+                           # 'lower left')
+                # plt.savefig('constrained_ei_chooser_eitimesprob_contour.pdf')
 
-                plt.figure(3)
-                plt.clf()
-                predei2 = predei2/float(self.mcmc_iters)
-                CS = plt.contour(X,Y,predei2)
-                plt.clabel(CS, inline=1, fontsize=10)
-                plt.plot(comp[labels == 0,0], comp[labels == 0,1], 'rx')
-                plt.plot(comp[labels == 1,0], comp[labels == 1,1], 'bx')
-                plt.title('Contours of EI')
-                plt.legend(('Constraint Violations', 'Good points'),
-                           'lower left')
-                plt.savefig('constrained_ei_chooser_ei_contour.pdf')
+                # plt.figure(3)
+                # plt.clf()
+                # predei2 = predei2/float(self.mcmc_iters)
+                # CS = plt.contour(X,Y,predei2)
+                # plt.clabel(CS, inline=1, fontsize=10)
+                # plt.plot(comp[labels == 0,0], comp[labels == 0,1], 'rx')
+                # plt.plot(comp[labels == 1,0], comp[labels == 1,1], 'bx')
+                # plt.title('Contours of EI')
+                # plt.legend(('Constraint Violations', 'Good points'),
+                           # 'lower left')
+                # plt.savefig('constrained_ei_chooser_ei_contour.pdf')
                 #plt.show()
 
             # Pick the top candidates to optimize over
